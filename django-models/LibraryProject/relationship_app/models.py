@@ -12,11 +12,21 @@ class Author(models.Model):
 
 
 class Book(models.Model):
-    title = models.CharField(max_length=200)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    author = models.CharField(max_length=255)
+    published_date = models.DateField()
+    # other fields as needed
+
+    class Meta:
+        permissions = [
+            ("can_add_book", "Can add book"),
+            ("can_change_book", "Can change book"),
+            ("can_delete_book", "Can delete book"),
+        ]
 
     def __str__(self):
         return self.title
+
 
 
 class Library(models.Model):
@@ -34,11 +44,11 @@ class Librarian(models.Model):
     def __str__(self):
         return self.name
 
-class UserProfile(models.Model):  # 🔴 Exact string required
+class UserProfile(models.Model):  
     ROLE_CHOICES = (
-        ('Admin', 'Admin'),       # 🔴 Checker requires "Admin"
+        ('Admin', 'Admin'),       
         ('Librarian', 'Librarian'),
-        ('Member', 'Member'),     # 🔴 Checker requires "Member"
+        ('Member', 'Member'),     
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
