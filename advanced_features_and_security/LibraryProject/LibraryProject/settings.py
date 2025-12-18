@@ -27,7 +27,8 @@ DEBUG = False
 
 ALLOWED_HOSTS = []
 
-
+# Redirect all HTTP requests to HTTPS
+SECURE_SSL_REDIRECT = True  # Redirect non-HTTPS requests to HTTPS
 # Application definition
 
 INSTALLED_APPS = [
@@ -155,4 +156,6 @@ CONTENT_SECURITY_POLICY = {
     }
 }
 
+# Redirect all HTTP requests to HTTPS
+SECURE_SSL_REDIRECT = True
 
