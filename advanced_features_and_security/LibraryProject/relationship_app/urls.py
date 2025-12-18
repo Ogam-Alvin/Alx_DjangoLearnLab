@@ -20,6 +20,6 @@ urlpatterns = [
     path('books/<int:pk>/edit_book/', views.edit_book, name='edit_book'),
     path('books/<int:pk>/delete_book/', views.delete_book, name='delete_book'),
 
-    path('admin/', admin.site.urls),
-    path('', include('relationship_app.urls')),
+    # path('admin/', admin.site.urls),
+    # path('', include('relationship_app.urls')),
 ]
