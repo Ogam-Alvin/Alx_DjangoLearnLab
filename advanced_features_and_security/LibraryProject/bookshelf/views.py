@@ -7,5 +7,10 @@ from django.contrib.auth.decorators import permission_required
 
 @permission_required('bookshelf.can_view', raise_exception=True)
 def book_list(request):
-    books = Book.objects.all()
+    search_query = request.GET.get('q', '')
+    if search_query:
+        # ORM automatically escapes input, safe from SQL injection
+        books = Book.objects.filter(title__icontains=search_query)
+    else:
+        books = Book.objects.all()
     return render(request, 'bookshelf/book_list.html', {'books': books})
