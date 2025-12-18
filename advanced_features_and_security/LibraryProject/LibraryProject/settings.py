@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-zms0piprzmn0+6f1hun&v68sjbq#=4+njqb5zg4v1kgccc@+#u"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "csp",
     "bookshelf",
     "relationship_app"
 ]
@@ -49,6 +50,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "csp.middleware.CSPMiddleware",
 ]
 
 ROOT_URLCONF = "LibraryProject.urls"
@@ -127,7 +129,6 @@ AUTH_USER_MODEL = 'bookshelf.CustomUser'
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False  # Must be False in production
 
 # Enforce HTTPS for cookies
 CSRF_COOKIE_SECURE = True
@@ -143,9 +144,15 @@ SECURE_HSTS_SECONDS = 31536000  # 1 year
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 
-# Content Security Policy - if using django-csp middleware
-INSTALLED_APPS += ['csp']
-MIDDLEWARE += ['csp.middleware.CSPMiddleware']
-CSP_DEFAULT_SRC = ("'self'",)
-CSP_SCRIPT_SRC = ("'self'",)
-CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
+
+CONTENT_SECURITY_POLICY = {
+    "DIRECTIVES": {
+        "default-src": ("'self'",),
+        "script-src": ("'self'",),
+        "style-src": ("'self'", "'unsafe-inline'"),
+        "img-src": ("'self'", "data:"),
+        "font-src": ("'self'",),
+    }
+}
+
+

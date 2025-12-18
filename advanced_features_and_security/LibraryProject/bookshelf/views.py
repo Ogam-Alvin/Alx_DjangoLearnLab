@@ -4,6 +4,9 @@ from django.shortcuts import render
 from django.shortcuts import render
 from .models import Book
 from django.contrib.auth.decorators import permission_required
+from django.views.decorators.clickjacking import xframe_options_deny
+from .forms import ExampleForm
+
 
 @permission_required('bookshelf.can_view', raise_exception=True)
 def book_list(request):
@@ -14,3 +17,9 @@ def book_list(request):
     else:
         books = Book.objects.all()
     return render(request, 'bookshelf/book_list.html', {'books': books})
+
+
+
+def form_example(request):
+    form = ExampleForm()
+    return render(request, 'bookshelf/form_example.html', {'form': form})
