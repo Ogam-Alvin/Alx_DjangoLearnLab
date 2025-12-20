@@ -4,6 +4,7 @@ from .views import (
     PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView,
     CommentCreateView, CommentUpdateView, CommentDeleteView,
 )
+from .views import PostByTagListView
 
 urlpatterns = [
     path("login/", views.login_view, name="login"),
@@ -25,5 +26,12 @@ urlpatterns = [
 
     path("search/", views.search_view, name="search"),
     path("tags/<str:tag_name>/", views.posts_by_tag, name="posts-by-tag"),
+
+    path(
+    "tags/<slug:tag_slug>/",
+    PostByTagListView.as_view(),
+    name="posts-by-tag"
+),
+
 
 ]
