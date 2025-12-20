@@ -1,8 +1,21 @@
-<h2>{{ object.title }}</h2>
-<p>{{ object.content }}</p>
-<p>Author: {{ object.author.username }}</p>
+<h3>Comments</h3>
 
-{% if user == object.author %}
-  <a href="{% url 'post-update' object.pk %}">Edit</a>
-  <a href="{% url 'post-delete' object.pk %}">Delete</a>
+{% for comment in object.comments.all %}
+  <p>
+    <strong>{{ comment.author.username }}</strong>:
+    {{ comment.content }}
+  </p>
+
+  {% if user == comment.author %}
+    <a href="{% url 'comment-update' comment.pk %}">Edit</a>
+    <a href="{% url 'comment-delete' comment.pk %}">Delete</a>
+  {% endif %}
+{% empty %}
+  <p>No comments yet.</p>
+{% endfor %}
+
+{% if user.is_authenticated %}
+  <a href="{% url 'comment-create' object.pk %}">Add Comment</a>
+{% else %}
+  <p>You must be logged in to comment.</p>
 {% endif %}
