@@ -28,7 +28,7 @@ SECRET_KEY = "django-insecure--i4r_z6w)8^bkb-a8b1yrig)%4cv#0u2az%#@6py-nf6lwb6z7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['your-domain.com', 'www.your-domain.com', '127.0.0.1']
+ALLOWED_HOSTS = ['your-app-name.herokuapp.com']
 
 
 # Application definition
@@ -82,8 +82,16 @@ WSGI_APPLICATION = "social_media_api.wsgi.application"
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME', 'social_media_db'),
+        'USER': os.environ.get('DB_USER', 'postgres'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'postgres'),
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
+    }
 }
+
 
 
 # Password validation
