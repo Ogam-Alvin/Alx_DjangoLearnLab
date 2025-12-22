@@ -1,12 +1,14 @@
-from rest_framework import viewsets, permissions, filters, status
-from .models import Post, Comment
+from django.shortcuts import get_object_or_404
+from rest_framework import viewsets, permissions, filters, status, generics
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
+from .models import Post, Comment, Like
 from .serializers import PostSerializer, CommentSerializer
 from .permissions import IsOwnerOrReadOnly
-from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from .models import Post, Like
 from notifications.models import Notification
+
 
 
 
@@ -49,7 +51,7 @@ class LikePostView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, pk):
-        post = Post.objects.get(pk=pk)
+        post = generics.get_object_or_404(Post, pk=pk)
 
         like, created = Like.objects.get_or_create(
             user=request.user,
@@ -79,9 +81,11 @@ class UnlikePostView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, pk):
+        post = generics.get_object_or_404(Post, pk=pk)
+
         Like.objects.filter(
             user=request.user,
-            post_id=pk
+            post=post
         ).delete()
 
         return Response(
