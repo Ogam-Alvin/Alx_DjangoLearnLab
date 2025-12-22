@@ -52,29 +52,14 @@ class LikePostView(APIView):
 
     def post(self, request, pk):
         post = generics.get_object_or_404(Post, pk=pk)
-
-        like, created = Like.objects.get_or_create(
-            user=request.user,
-            post=post
-        )
+        like, created = Like.objects.get_or_create(user=request.user, post=post)
 
         if not created:
-            return Response(
-                {"detail": "Post already liked"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response({"detail": "Post already liked"}, status=status.HTTP_400_BAD_REQUEST)
 
-        Notification.objects.create(
-            recipient=post.author,
-            actor=request.user,
-            verb="liked your post",
-            target=post
-        )
+        Notification.objects.create(recipient=post.author, actor=request.user, verb="liked your post", target=post)
 
-        return Response(
-            {"message": "Post liked"},
-            status=status.HTTP_201_CREATED
-        )
+        return Response({"message": "Post liked"}, status=status.HTTP_201_CREATED)
 
 
 class UnlikePostView(APIView):
